@@ -1,0 +1,27 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - REGISTRY_USER=vaidik
+    - secure: "DYFHMsw0lCQjOeRvhaKDWl876P+M4e8bwK2BoBBakTvAzz3uZIKsiBbgI/XZmRGpA6iu4/+bqs2YVHi1U+F2biEH3jC/HYXjCSQch5+iQ6LTI/Uzc4FzXc1ReAosgOy4IJHfK2FlaFJF0Az/wKeS8r/bSH3PpJYbsEfVjyN5tPIYnlH6soX6ku62EfCrxtgvCIsFhk7bsXGCRhf9Q0wnqeZyM+9HqHP53wMnlOKcXwCVJjkXSP0mDQ4299v76GnaebASt+fekxS2+R16jfgLSnDHGUME/Nx9GBAEFSKtfk+3YcnGDBNbdf4PAmHq84uvW/peOiZRUgjGl545NlhWeWyQmz9pa4VHMzGARO7P5f/cpPyqsvgCYaz1F7EVhU4hkkN34nZSwt2fCj9+IknfIOAlMU4s5yB7K8Odg2kmSRkDd5X2SniyMp8aT63wTudW97/0ENsux8LbLaNg8xaV2J03LhE6ilOH3VxaZgLe65X3sSVOMDbb3axKTEK6cCi2wj2ZG+b/nGZTac9N8NSarGnOPqMYlH9bE6bjvqELhmH+ehemFbXsTaKX9Q1M3qUCHfUfLFr9iSn/GZxzJl7h1B9RAZ/KH409yQTSFgp3ulscnqNZp5Xx6mVg2+od4kufK5tJIEdjB2r2BzgcrQfyFBXG/+lgZTK9Joh3SbD+4vE="
+
+before_script:
+  - docker pull myorg/myimage || true
+
+script:
+  - docker build --pull --cache-from haskell --cache-from debian:stretch-slim --tag vaidik/vaidik.in .
+  - docker run vaidik/vaidik.in
+
+after_script:
+  - docker images
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+deploy:
+  provider: script
+  script: docker push vaidik/vaidik.in
+  on:
+    branch: master
