@@ -13,6 +13,7 @@ permanentlyMove src dest = get src $ do
 
 routes :: ScottyM ()
 routes = do
+    permanentlyMove "/" "https://medium.com/vaidikkapoor/"
     permanentlyMove "/blog/vagrant-for-development-in-a-service-oriented-architecture.html" "https://medium.com/vaidikkapoor/vagrant-for-development-in-a-service-oriented-architecture-soa-54ad1f26ff53"
     permanentlyMove "/blog/understanding-non-blocking-io-with-python-part-1.html" "https://medium.com/vaidikkapoor/understanding-non-blocking-i-o-with-python-part-1-ec31a2e2db9b"
     permanentlyMove "/blog/incoming-python-json-validation-framework.html" "https://medium.com/vaidikkapoor/incoming-json-validation-framework-for-python-6da035d81ccc"
